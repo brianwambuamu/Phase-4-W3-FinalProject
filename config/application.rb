@@ -23,6 +23,9 @@ module ChatApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    # To allow requests to chat-app-back-end-production.up.railway.app make sure it is a valid hostname (containing only numbers, letters, dashes and dots), then add the following to your environment configuration:
+    config.hosts << "http://127.0.0.1:3000/users"
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -35,5 +38,11 @@ module ChatApp
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+
+    # Use SameSite=Strict for all cookies to help protect against CSRF
+    config.action_dispatch.cookies_same_site_protection = :strict
   end
 end
